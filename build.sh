@@ -1,5 +1,4 @@
 #!/bin/sh
-
 TOP=`dirname $0`
 VERSION=${TOP}/version
 
