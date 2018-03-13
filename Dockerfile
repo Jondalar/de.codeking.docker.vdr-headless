@@ -1,7 +1,7 @@
 #####################################################################
 # COMPILE VDR BUILD
 #####################################################################
-FROM alpine:edge AS vdr-server
+FROM alpine:edge AS vdr-build
 MAINTAINER CodeKing <frank@codeking.de>
 
 ENV ROBOTV_VERSION="master" \
@@ -13,7 +13,7 @@ USER root
 RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk --update add build-base freetype-dev fontconfig-dev gettext-dev \
 	libjpeg-turbo-dev libcap-dev pugixml-dev curl-dev git bzip2 libexecinfo-dev \
-	ncurses-dev bash imagemagick-dev pcre-dev openssl-dev zip g++ libcrypto1.0
+	ncurses-dev bash imagemagick-dev pcre-dev openssl-dev zip g++
 
 # SWITCH TO BUILD DIR
 RUN mkdir -p /build
@@ -67,18 +67,7 @@ RUN patch -p1 < /build/patches/epgsearch/install-conf.patch
 WORKDIR ../../..
 
 # CREATE DIRECTORIES
-RUN mkdir -p /opt && \
-    mkdir -p /opt/vdr && \
-    mkdir -p /opt/templates && \
-    mkdir -p /data && \
-    mkdir -p /video && \
-    mkdir -p /timeshift
-
-# COPY FILES
-COPY bin/runvdr.sh /opt/vdr/
-COPY templates/diseqc.conf /opt/templates/
-COPY templates/sources.conf /opt/templates/
-COPY templates/channels.conf /opt/templates/
+RUN mkdir -p /opt/vdr
 
 # COMPILE VDR
 RUN make -j 4 && make install
@@ -100,8 +89,34 @@ RUN for lib in ${LIBS} ; do \
         rm -f /opt/vdr/lib/libvdr-${lib}* ; \
     done
 
-# REMOVE BUILD DIRECTORY
-RUN rm -Rf /build
+#####################################################################
+# BUILD VDR IMAGE
+#####################################################################
+FROM alpine:edge AS vdr-server
+
+USER root
+
+# INSTALL DEPENDENCIES
+RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+RUN apk update && apk add freetype fontconfig libintl libexecinfo \
+    libjpeg-turbo libcap pugixml libcurl libcrypto1.0 pcre-dev imagemagick-dev
+
+# CREATE DIRS
+RUN mkdir -p /opt && \
+    mkdir -p /data && \
+    mkdir -p /video && \
+    mkdir -p /opt/templates && \
+    mkdir -p /timeshift
+
+# COPY BINARIES
+COPY --from=vdr-build /opt/ /opt/
+COPY --from=vdr-build /usr/local/lib/ /usr/local/lib/
+
+# COPY TEMPLATES
+COPY bin/runvdr.sh /opt/vdr/
+COPY templates/diseqc.conf /opt/templates/
+COPY templates/sources.conf /opt/templates/
+COPY templates/channels.conf /opt/templates/
 
 # SET DEFAULT ENVIRONMENT VARIABLES
 ENV DVBAPI_ENABLE="1" \
