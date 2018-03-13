@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "=> tagging and pushing docker image (version ${ROBOTV_VERSION}-${DOCKER_BUILD})"
+
+. $(pwd)/version
+
+docker tag CodeKing/vdr-server:latest CodeKing/robotv-server:${ROBOTV_VERSION}-${DOCKER_BUILD}
+docker push CodeKing/vdr-server:${ROBOTV_VERSION}-${DOCKER_BUILD}

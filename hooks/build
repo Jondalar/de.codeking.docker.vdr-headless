@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "=> building the docker image"
+
+$(pwd)/build.sh

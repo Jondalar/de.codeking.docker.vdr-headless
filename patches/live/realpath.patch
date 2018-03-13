@@ -1,0 +1,13 @@
+Index: live.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- live.cpp	(revision e582514ede475574842b44ca6792335ff141172d)
++++ live.cpp	(date 1520891068782)
+@@ -39,8 +39,8 @@
+
+-	m_configDirectory = canonicalize_file_name(cPlugin::ConfigDirectory( PLUGIN_NAME_I18N ));
+-	m_resourceDirectory = canonicalize_file_name(cPlugin::ResourceDirectory( PLUGIN_NAME_I18N ));
++	m_configDirectory = realpath(cPlugin::ConfigDirectory( PLUGIN_NAME_I18N, NULL ));
++	m_resourceDirectory = realpath(cPlugin::ResourceDirectory( PLUGIN_NAME_I18N, NULL ));
