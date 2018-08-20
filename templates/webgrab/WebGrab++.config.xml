@@ -1,0 +1,100 @@
+<!--?xml version="1.0"?-->
+<settings>
+    <filename>/data/webgrab/guide.xml</filename>
+    <mode></mode>
+    <postprocess grab="y" run="n">mdb</postprocess>
+    <logging>off</logging>
+    <retry time-out="5">4</retry>
+    <timespan>7</timespan>
+    <update>f</update>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503040" xmltv_id="das-erste.de">Das Erste HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503164" xmltv_id="zdf.de">ZDF HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_720955943126" xmltv_id="rtl.de">RTL HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_720956455058" xmltv_id="sat1.de">Sat1 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503098" xmltv_id="pro7.de">Pro7 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503099" xmltv_id="kabel1.de">kabel 1 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29609511125" xmltv_id="rtl2.de">RTL2 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503125" xmltv_id="super-rtl.de">Super RTL HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503002" xmltv_id="vox.de">VOX HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_432862759162" xmltv_id="dmax.de">DMAX HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_342570535343" xmltv_id="pro7-maxx.de">ProSieben Maxx HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29609511122" xmltv_id="sixx.de">sixx HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_342570535339" xmltv_id="rtl-nitro.de">RTL Nitro HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503006" xmltv_id="rtl-crime.de">RTL Crime HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503119" xmltv_id="e-entertainm.de">E! Entertainment HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_720012839067" xmltv_id="sat1-gold.de">Sat1 Gold HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438502999" xmltv_id="servustv.de">ServusTV HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_342571559048" xmltv_id="arte.de">arte HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_616178215134" xmltv_id="3sat.de">3Sat HD</channel>
+    <channel update="i" site="horizon.tv" site_id="CH/ita_541614119269" xmltv_id="hr-fernsehen.de">hr-fernsehen HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_616178215135" xmltv_id="one.de">ONE HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503079" xmltv_id="zdf-info.de">ZDFinfo HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_616654375081" xmltv_id="zdf-neo.de">ZDF neo HD</channel>
+    <channel update="i" site="horizon.tv" site_id="CH/ita_27909159290" xmltv_id="wdr.de">WDR HD</channel>
+    <channel update="i" site="horizon.tv" site_id="CH/ita_541614119271" xmltv_id="rbb.de">rbb Berlin HD</channel>
+    <channel update="i" site="horizon.tv" site_id="CH/ita_27909159360" xmltv_id="swr.de">SWR HD</channel>
+    <channel update="i" site="horizon.tv" site_id="CH/ita_27909159183" xmltv_id="br.de">BR HD</channel>
+    <channel update="i" site="horizon.tv" site_id="CH/ita_541614119263" xmltv_id="mdr.de">MDR HD</channel>
+    <channel update="i" site="horizon.tv" site_id="CH/ita_27909159151" xmltv_id="ndr.de">NDR HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_713302567357" xmltv_id="tele5.de">Tele 5 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="AT/deu_554823207417" xmltv_id="orf1.at">ORF1 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="AT/deu_558827047204" xmltv_id="orf2.at">ORF2 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="AT/deu_558897191431" xmltv_id="orf3.at">ORF3 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503116" xmltv_id="syfy.de">SyFy HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_726358055419" xmltv_id="tlc.de">TLC HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_427555366999" xmltv_id="fox.de">Fox HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_432862759163" xmltv_id="comedy-central.de">COMEDY CENTRAL HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503057" xmltv_id="tnt-comedy.de">TNT Comedy HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_427555366994" xmltv_id="tnt-serie.de">TNT Serie HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_706506791274" xmltv_id="universal.de">Universal Channel HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503168" xmltv_id="13th-street.de">13th Street HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_427555367001" xmltv_id="discovery.de">Discovery HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503085" xmltv_id="nat-geo-wild.de">Nat Geo Wild HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_427555366991" xmltv_id="natgeo.de">NatGeo HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438502986" xmltv_id="spiegel-geschichte.de">Spiegel Geschichte HD</channel>
+    <channel update="i" site="horizon.tv" site_id="CH/deu_668884519375" xmltv_id="tagesschau24.de">tagesschau24 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_726358055421" xmltv_id="welt.de">Welt HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_706496551303" xmltv_id="phoenix.de">PHOENIX HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503069" xmltv_id="ntv.de">ntv HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503036" xmltv_id="sky-atlantic.de">Sky Atlantic HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438502975" xmltv_id="sky-cinema.de">Sky Cinema HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503092" xmltv_id="sky-cinema1.de">Sky Cinema +1 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438502977" xmltv_id="sky-cinema24.de">Sky Cinema +24 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_342570535345" xmltv_id="sky-action.de">Sky Cinema Action HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438502960" xmltv_id="sky-hits.de">Sky Cinema Hits HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503104" xmltv_id="sky-comedy.de">Sky Cinema Comedy HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_119414823226" xmltv_id="sky-bundesliga1.de">Sky Sport Bundesliga 1 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_97245734975" xmltv_id="sky-bundesliga2.de">Sky Sport Bundesliga 2 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_97245734976" xmltv_id="sky-bundesliga3.de">Sky Sport Bundesliga 3 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_97245734977" xmltv_id="sky-bundesliga4.de">Sky Sport Bundesliga 4 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="AT/deu_554823207380" xmltv_id="sky-bundesliga5.de">Sky Sport Bundesliga HD 5</channel>
+    <channel update="i" site="horizon.tv" site_id="AT/deu_554823207369" xmltv_id="sky-bundesliga6.de">Sky Sport Bundesliga HD 6</channel>
+    <channel update="i" site="horizon.tv" site_id="AT/deu_686308903052" xmltv_id="sky-bundesliga7.de">Sky Sport Bundesliga HD 7</channel>
+    <channel update="i" site="horizon.tv" site_id="AT/deu_686308903053" xmltv_id="sky-bundesliga8.de">Sky Sport Bundesliga HD 8</channel>
+    <channel update="i" site="horizon.tv" site_id="AT/deu_554823207358" xmltv_id="sky-bundesliga9.de">Sky Sport Bundesliga HD 9</channel>
+    <channel update="i" site="horizon.tv" site_id="AT/deu_686308903054" xmltv_id="sky-bundesliga10.de">Sky Sport Bundesliga HD 10</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503044" xmltv_id="sky-sport1.de">Sky Sport 1 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438502955" xmltv_id="sky-sport2.de">Sky Sport 2 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_97245734979" xmltv_id="sky-sport3.de">Sky Sport 3 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_97245734980" xmltv_id="sky-sport4.de">Sky Sport 4 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_97245734978" xmltv_id="sky-sport5.de">Sky Sport 5 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29436455409" xmltv_id="sky-sport6.de">Sky Sport 6 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29436455398" xmltv_id="sky-sport7.de">Sky Sport 7 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29436455399" xmltv_id="sky-sport8.de">Sky Sport 8 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29436455403" xmltv_id="sky-sport9.de">Sky Sport 9 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29436455404" xmltv_id="sky-sport10.de">Sky Sport 10 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29436455418" xmltv_id="sky-sport11.de">Sky Sport 11 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438503147" xmltv_id="eursosport1.de">Eurosport 1 HD</channel>
+    <channel update="i" site="horizon.tv" site_id="DE/deu_29438502964" xmltv_id="eurosport2.de">Eurosport 2 HD</channel>
+    <channel update="i" site="sky.de" site_id="532" xmltv_id="sky-family.de">Sky Cinema Family HD</channel>
+    <channel update="i" site="sky.de" site_id="642" xmltv_id="sky-animation.de">Sky Cinema Animation HD</channel>
+    <channel update="i" site="sky.de" site_id="163" xmltv_id="eurosport360-1.de">Eurosport360HD 1</channel>
+    <channel update="i" site="sky.de" site_id="164" xmltv_id="eurosport360-2.de">Eurosport360HD 2</channel>
+    <channel update="i" site="sky.de" site_id="165" xmltv_id="eurosport360-3.de">Eurosport360HD 3</channel>
+    <channel update="i" site="sky.de" site_id="166" xmltv_id="eurosport360-4.de">Eurosport360HD 4</channel>
+    <channel update="i" site="sky.de" site_id="167" xmltv_id="eurosport360-5.de">Eurosport360HD 5</channel>
+    <channel update="i" site="sky.de" site_id="168" xmltv_id="eurosport360-6.de">Eurosport360HD 6</channel>
+    <channel update="i" site="sky.de" site_id="169" xmltv_id="eurosport360-7.de">Eurosport360HD 7</channel>
+    <channel update="i" site="sky.de" site_id="170" xmltv_id="eurosport360-8.de">Eurosport360HD 8</channel>
+    <channel update="i" site="sky.de" site_id="171" xmltv_id="eurosport360-9.de">Eurosport360HD 9</channel>
+</settings>

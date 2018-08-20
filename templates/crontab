@@ -1,0 +1,1 @@
+15 4 * * * /usr/bin/mono /webgrab/bin/WebGrab+Plus.exe /data/webgrab && /xmltv2vdr/xmltv2vdr.pl -c /opt/templates/vdr/channels.conf -x /data/webgrab/guide.xml &> /dev/null

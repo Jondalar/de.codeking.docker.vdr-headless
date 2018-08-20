@@ -5,7 +5,7 @@ FROM alpine:edge AS vdr-build
 MAINTAINER CodeKing <frank@codeking.de>
 
 ENV ROBOTV_VERSION="master" \
-    VDR_VERSION="2.3.8"
+    VDR_VERSION="2.3.9"
 
 USER root
 
@@ -13,7 +13,8 @@ USER root
 RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk --update add build-base freetype-dev fontconfig-dev gettext-dev \
 	libjpeg-turbo-dev libcap-dev pugixml-dev curl-dev git bzip2 libexecinfo-dev \
-	ncurses-dev bash imagemagick-dev pcre-dev openssl-dev zip g++
+	ncurses-dev bash imagemagick-dev pcre-dev libressl-dev zip g++ && \
+    rm -rf /var/cache/apk/*
 
 # SWITCH TO BUILD DIR
 RUN mkdir -p /build
@@ -44,14 +45,14 @@ RUN git clone https://github.com/vdr-projects/vdr-plugin-epgsearch.git vdr-$VDR_
 RUN git clone -b robotv https://github.com/pipelka/vdr-plugin-satip.git vdr-$VDR_VERSION/PLUGINS/src/satip
 RUN git clone https://github.com/vdr-projects/vdr-plugin-streamdev.git vdr-$VDR_VERSION/PLUGINS/src/streamdev
 RUN git clone https://github.com/yavdr/vdr-plugin-restfulapi.git vdr-$VDR_VERSION/PLUGINS/src/restfulapi
-#RUN git clone https://github.com/vdr-projects/vdr-plugin-live.git vdr-$VDR_VERSION/PLUGINS/src/live
 RUN git clone https://github.com/FernetMenta/vdr-plugin-vnsiserver.git vdr-$VDR_VERSION/PLUGINS/src/vnsiserver
 RUN git clone https://github.com/flensrocker/vdr-plugin-dummydevice vdr-$VDR_VERSION/PLUGINS/src/dummydevice
+RUN git clone https://github.com/flensrocker/vdr-plugin-noepg vdr-$VDR_VERSION/PLUGINS/src/noepg
 
 WORKDIR vdr-$VDR_VERSION
 
 # COPY TEMPLATE FILES
-COPY templates/Make.* /build/vdr-$VDR_VERSION/
+COPY templates/vdr/Make.* /build/vdr-$VDR_VERSION/
 
 # RUN PATCHES
 RUN mkdir -p /build/patches
@@ -98,25 +99,65 @@ USER root
 
 # INSTALL DEPENDENCIES
 RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-RUN apk update && apk add freetype fontconfig libintl libexecinfo \
-    libjpeg-turbo libcap pugixml libcurl libcrypto1.0 pcre-dev imagemagick-dev
+RUN apk update && \
+    apk add freetype fontconfig libintl libexecinfo libjpeg-turbo libcap pugixml libcurl \
+        libcrypto1.0 pcre-dev imagemagick-dev dcron wget curl mono bash perl perl-date-manip \
+        apache2 php7-apache2 php7-openssl tzdata && \
+    rm -rf /var/cache/apk/*
 
 # CREATE DIRS
 RUN mkdir -p /opt && \
     mkdir -p /data && \
     mkdir -p /video && \
-    mkdir -p /opt/templates && \
-    mkdir -p /timeshift
+    mkdir -p /opt/templates/ \
+    mkdir -p /timeshift && \
+    mkdir -p /webgrab && \
+    mkdir -p /xmltv2vdr
 
 # COPY BINARIES
 COPY --from=vdr-build /opt/ /opt/
 COPY --from=vdr-build /usr/local/lib/ /usr/local/lib/
 
 # COPY TEMPLATES
-COPY bin/runvdr.sh /opt/vdr/
-COPY templates/diseqc.conf /opt/templates/
-COPY templates/sources.conf /opt/templates/
-COPY templates/channels.conf /opt/templates/
+ADD templates/vdr/ /opt/templates/vdr/
+ADD templates/web/ /opt/templates/web/
+COPY templates/webgrab/WebGrab++.config.xml /webgrab/
+COPY templates/xmltv2vdr/* /xmltv2vdr/
+
+# INSTALL WEBGRAB++
+ADD http://www.webgrabplus.com/sites/default/files/download/SW/V2.1.0/WebGrabPlus_V2.1_install.tar.gz /webgrab/webgrab.tar.gz
+WORKDIR /webgrab
+RUN tar xfz webgrab.tar.gz && \
+    rm webgrab.tar.gz && \
+    cd ./.wg++ && \
+    mv * ../ && \
+    cd ../ && \
+    rm -R ./.wg++ && \
+    ./install.sh
+
+# INSTALL XMLTV2VDR
+COPY bin/xmltv2vdr.pl /xmltv2vdr/
+RUN chmod +x /xmltv2vdr/xmltv2vdr.pl
+
+# MODIFY APACHE CONFIG
+RUN mkdir /run/apache2 \
+    && sed -i "s/#LoadModule\ rewrite_module/LoadModule\ rewrite_module/" /etc/apache2/httpd.conf \
+    && sed -i "s/#LoadModule\ session_module/LoadModule\ session_module/" /etc/apache2/httpd.conf \
+    && sed -i "s/#LoadModule\ session_cookie_module/LoadModule\ session_cookie_module/" /etc/apache2/httpd.conf \
+    && sed -i "s/#LoadModule\ session_crypto_module/LoadModule\ session_crypto_module/" /etc/apache2/httpd.conf \
+    && sed -i "s/#LoadModule\ deflate_module/LoadModule\ deflate_module/" /etc/apache2/httpd.conf \
+    && sed -i "s#^DocumentRoot \".*#DocumentRoot \"/data/web\"#g" /etc/apache2/httpd.conf \
+    && sed -i "s#/var/www/localhost/htdocs#/data/web#" /etc/apache2/httpd.conf \
+    && sed -i -e 's/Listen 80/Listen 8099/g' /etc/apache2/httpd.conf \
+    && printf "\n<Directory \"/app/public\">\n\tAllowOverride All\n</Directory>\n" >> /etc/apache2/httpd.conf
+
+# INSTALL WEBGRAB CRONJOB
+ADD templates/crontab /etc/cron.d/webgrab
+RUN chmod 0644 /etc/cron.d/webgrab \
+    && touch /var/log/cron.log
+CMD cron && tail -f /var/log/cron.log
+RUN /usr/bin/crontab /etc/cron.d/webgrab
+CMD ["/usr/sbin/crond", "-f"]
 
 # SET DEFAULT ENVIRONMENT VARIABLES
 ENV DVBAPI_ENABLE="1" \
@@ -127,14 +168,17 @@ ENV DVBAPI_ENABLE="1" \
     SATIP_SERVER="10.0.0.11|DVBS2-8|OctopusV2" \
     ROBOTV_TIMESHIFTDIR="/video" \
     ROBOTV_MAXTIMESHIFTSIZE="4000000000" \
-    ROBOTV_PICONSURL="http://10.0.0.12/picons/" \
+    ROBOTV_PICONSURL="http://10.0.0.10:8099/picons/" \
     ROBOTV_SERIESFOLDER="Serien" \
-    ROBOTV_CHANNELCACHE="true" \
-    ROBOTV_EPGIMAGEURL="" \
+    ROBOTV_EPGIMAGEURL="http://10.0.0.10:8099/epgimages/?e=%d" \
     VDR_LOGLEVEL="2" \
     VDR_UPDATECHANNELS="3" \
     TZ="Europe/Berlin"
 
+# EXPOSE PORTS
+EXPOSE 8099
+
 # SET RUNSCRIPT
-RUN chmod +x /opt/vdr/runvdr.sh
-ENTRYPOINT [ "/opt/vdr/runvdr.sh" ]
+COPY bin/run.sh /opt/vdr/
+RUN chmod +x /opt/vdr/run.sh
+ENTRYPOINT [ "/opt/vdr/run.sh" ]
