@@ -4,9 +4,6 @@
 FROM alpine:edge AS vdr-build
 MAINTAINER CodeKing <frank@codeking.de>
 
-ENV ROBOTV_VERSION="master" \
-    VDR_VERSION="2.3.9"
-
 USER root
 
 # INSTALL DEPENDENCIES
@@ -36,8 +33,12 @@ WORKDIR tntnet-2.2.1
 RUN ./configure && make -j 4 && make install
 WORKDIR ../
 
+# VDR & ROBOTV VERSION
+ENV ROBOTV_VERSION="master"
+ENV VDR_VERSION="2.4.0"
+
 # DOWNLOAD VDR SERVER & PLUGINS
-RUN wget ftp://ftp.tvdr.de/vdr/Developer/vdr-$VDR_VERSION.tar.bz2
+RUN wget ftp://ftp.tvdr.de/vdr/vdr-$VDR_VERSION.tar.bz2
 RUN tar -jxf vdr-$VDR_VERSION.tar.bz2
 RUN git clone -b $ROBOTV_VERSION https://github.com/pipelka/vdr-plugin-robotv.git vdr-$VDR_VERSION/PLUGINS/src/robotv
 RUN git clone https://github.com/manio/vdr-plugin-dvbapi.git vdr-$VDR_VERSION/PLUGINS/src/dvbapi
@@ -74,7 +75,7 @@ RUN mkdir -p /opt/vdr
 RUN make -j 4 && make install
 
 # STRIP DEBUG INFORMATIONS
-RUN for plugin in robotv epgsearch dummydevice satip streamdev-server live vnsiserver restfulapi ; do \
+RUN for plugin in robotv dvbapi epgsearch dummydevice satip streamdev-server vnsiserver restfulapi noepg ; do \
         strip -s --strip-debug /opt/vdr/lib/libvdr-${plugin}.so.* ; \
     done ; \
     strip -s --strip-debug /opt/vdr/bin/vdr
@@ -153,11 +154,13 @@ RUN mkdir /run/apache2 \
 
 # INSTALL WEBGRAB CRONJOB
 ADD templates/crontab /etc/cron.d/webgrab
-RUN chmod 0644 /etc/cron.d/webgrab \
-    && touch /var/log/cron.log
-CMD cron && tail -f /var/log/cron.log
-RUN /usr/bin/crontab /etc/cron.d/webgrab
-CMD ["/usr/sbin/crond", "-f"]
+RUN chmod 0644 /etc/cron.d/webgrab
+
+# INIT CRONTAB
+RUN crontab /etc/cron.d/webgrab
+
+# RUN CRON DAEMON
+CMD ["crond", "-f"]
 
 # SET DEFAULT ENVIRONMENT VARIABLES
 ENV DVBAPI_ENABLE="1" \
