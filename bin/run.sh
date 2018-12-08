@@ -125,9 +125,9 @@ echo ""
 httpd
 
 # run webgrab initially
-#if [ ! -f /webgrab/guide.xml  ]; then
-#    (/usr/bin/mono /webgrab/bin/WebGrab+Plus.exe ${WEBGRABCONFDIR}; /xmltv2vdr/xmltv2vdr.pl -c /opt/templates/vdr/channels.conf -x ${WEBGRABCONFDIR}/guide.xml -v) &
-#fi
+if [ ! -f /webgrab/guide.xml  ]; then
+    (/usr/bin/mono /webgrab/bin/WebGrab+Plus.exe ${WEBGRABCONFDIR}; /xmltv2vdr/xmltv2vdr.pl -c /opt/templates/vdr/channels.conf -x ${WEBGRABCONFDIR}/guide.xml -v) &
+fi
 
 # run crond in background mode
 echo "Starting CROND..."
