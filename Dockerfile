@@ -182,4 +182,5 @@ EXPOSE 8099
 COPY bin/run.sh /opt/vdr/
 RUN chmod +x /opt/vdr/run.sh
 
+# RUN VDR
 ENTRYPOINT [ "/opt/vdr/run.sh" ]
