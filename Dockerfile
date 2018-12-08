@@ -159,9 +159,6 @@ RUN chmod 0644 /etc/cron.d/webgrab
 # INIT CRONTAB
 RUN crontab /etc/cron.d/webgrab
 
-# RUN CRON DAEMON
-CMD ["crond", "-f"]
-
 # SET DEFAULT ENVIRONMENT VARIABLES
 ENV DVBAPI_ENABLE="1" \
     DVBAPI_HOST="127.0.0.1" \
@@ -184,4 +181,5 @@ EXPOSE 8099
 # SET RUNSCRIPT
 COPY bin/run.sh /opt/vdr/
 RUN chmod +x /opt/vdr/run.sh
+
 ENTRYPOINT [ "/opt/vdr/run.sh" ]
