@@ -1,13 +1,12 @@
 #####################################################################
 # COMPILE VDR BUILD
 #####################################################################
-FROM alpine:edge AS vdr-build
-MAINTAINER CodeKing <frank@codeking.de>
+FROM alpine:3.8 AS vdr-build
+MAINTAINER CodeKing <frank@herrmann.to>
 
 USER root
 
 # INSTALL DEPENDENCIES
-RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk --update add build-base freetype-dev fontconfig-dev gettext-dev \
 	libjpeg-turbo-dev libcap-dev pugixml-dev curl-dev git bzip2 libexecinfo-dev \
 	ncurses-dev bash imagemagick-dev pcre-dev libressl-dev zip g++ && \
@@ -94,15 +93,14 @@ RUN for lib in ${LIBS} ; do \
 #####################################################################
 # BUILD VDR IMAGE
 #####################################################################
-FROM alpine:edge AS vdr-server
+FROM alpine:3.8 AS vdr-server
 
 USER root
 
 # INSTALL DEPENDENCIES
-RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk update && \
     apk add freetype fontconfig libintl libexecinfo libjpeg-turbo libcap pugixml libcurl \
-        libcrypto1.0 pcre-dev imagemagick-dev dcron wget curl mono bash perl perl-date-manip \
+        libcrypto1.0 pcre-dev imagemagick-dev dcron wget curl bash perl perl-date-manip \
         apache2 php7-apache2 php7-openssl tzdata && \
     rm -rf /var/cache/apk/*
 
@@ -111,9 +109,7 @@ RUN mkdir -p /opt && \
     mkdir -p /data && \
     mkdir -p /video && \
     mkdir -p /opt/templates/ \
-    mkdir -p /timeshift && \
-    mkdir -p /webgrab && \
-    mkdir -p /xmltv2vdr
+    mkdir -p /timeshift
 
 # COPY BINARIES
 COPY --from=vdr-build /opt/ /opt/
@@ -124,21 +120,6 @@ ADD templates/vdr/ /opt/templates/vdr/
 ADD templates/web/ /opt/templates/web/
 COPY templates/webgrab/WebGrab++.config.xml /webgrab/
 COPY templates/xmltv2vdr/* /xmltv2vdr/
-
-# INSTALL WEBGRAB++
-ADD http://www.webgrabplus.com/sites/default/files/download/SW/V2.1.0/WebGrabPlus_V2.1_install.tar.gz /webgrab/webgrab.tar.gz
-WORKDIR /webgrab
-RUN tar xfz webgrab.tar.gz && \
-    rm webgrab.tar.gz && \
-    cd ./.wg++ && \
-    mv * ../ && \
-    cd ../ && \
-    rm -R ./.wg++ && \
-    ./install.sh
-
-# INSTALL XMLTV2VDR
-COPY bin/xmltv2vdr.pl /xmltv2vdr/
-RUN chmod +x /xmltv2vdr/xmltv2vdr.pl
 
 # MODIFY APACHE CONFIG
 RUN mkdir /run/apache2 \
@@ -151,13 +132,6 @@ RUN mkdir /run/apache2 \
     && sed -i "s#/var/www/localhost/htdocs#/data/web#" /etc/apache2/httpd.conf \
     && sed -i -e 's/Listen 80/Listen 8099/g' /etc/apache2/httpd.conf \
     && printf "\n<Directory \"/app/public\">\n\tAllowOverride All\n</Directory>\n" >> /etc/apache2/httpd.conf
-
-# INSTALL WEBGRAB CRONJOB
-ADD templates/crontab /etc/cron.d/webgrab
-RUN chmod 0644 /etc/cron.d/webgrab
-
-# INIT CRONTAB
-RUN crontab /etc/cron.d/webgrab
 
 # SET DEFAULT ENVIRONMENT VARIABLES
 ENV DVBAPI_ENABLE="1" \

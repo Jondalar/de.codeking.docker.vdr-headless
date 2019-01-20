@@ -22,7 +22,7 @@ echo "0.0.0.0/0" > ${CONFDIR}/svdrphosts.conf
 
 # General configuration
 echo "UpdateChannels = ${VDR_UPDATECHANNELS}" > ${CONFDIR}/setup.conf
-echo "EPGScanTimeout = 0" >> ${CONFDIR}/setup.conf
+echo "EPGScanTimeout = 5" >> ${CONFDIR}/setup.conf
 
 # DVBAPI configuration
 echo "dvbapi.LogLevel = 2" >> ${CONFDIR}/setup.conf
@@ -107,14 +107,6 @@ if [ ! -z "${ROBOTV_EPGIMAGEURL}" ] ; then
     echo "EpgImageUrl = ${ROBOTV_EPGIMAGEURL}" >> ${CONFDIR}/plugins/robotv/robotv.conf
 fi
 
-# configure vdr
-WEBGRABCONFDIR=/data/webgrab
-
-[ ! -f ${WEBGRABCONFDIR}/WebGrab++.config.xml ] && cp /webgrab/WebGrab++.config.xml ${WEBGRABCONFDIR}/
-[ ! -d ${WEBGRABCONFDIR}/mdb ] && cp -R /webgrab/mdb/ ${WEBGRABCONFDIR}/
-[ ! -d ${WEBGRABCONFDIR}/rex ] && cp -R /webgrab/rex/ ${WEBGRABCONFDIR}/
-[ ! -d ${WEBGRABCONFDIR}/siteini.pack ] && cp -R /webgrab/siteini.pack/ ${WEBGRABCONFDIR}/
-
 # run apache
 rm -f /run/apache2/apache2.pid
 rm -f /run/apache2/httpd.pid
@@ -123,17 +115,6 @@ echo "Starting Apache..."
 echo "--------------------------------------------"
 echo ""
 httpd
-
-# run webgrab initially
-if [ ! -f /webgrab/guide.xml  ]; then
-    (/usr/bin/mono /webgrab/bin/WebGrab+Plus.exe ${WEBGRABCONFDIR}; /xmltv2vdr/xmltv2vdr.pl -c /opt/templates/vdr/channels.conf -x ${WEBGRABCONFDIR}/guide.xml -v) &
-fi
-
-# run crond in background mode
-echo "Starting CROND..."
-echo "--------------------------------------------"
-echo ""
-/usr/sbin/crond -b
 
 sleep 1
 
