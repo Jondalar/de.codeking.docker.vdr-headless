@@ -1,5 +1,6 @@
 #####################################################################
 # COMPILE VDR BUILD
+# Modified to run in my qnap+sonytv setup
 #####################################################################
 FROM alpine:3.8 AS vdr-build
 MAINTAINER CodeKing <frank@herrmann.to>
@@ -135,16 +136,16 @@ RUN mkdir /run/apache2 \
 
 # SET DEFAULT ENVIRONMENT VARIABLES
 ENV DVBAPI_ENABLE="1" \
-    DVBAPI_HOST="127.0.0.1" \
-    DVBAPI_PORT="2000" \
-    DVBAPI_OFFSET=2 \
+    DVBAPI_HOST="192.168.242.40" \
+    DVBAPI_PORT="2041" \
+    DVBAPI_OFFSET="0" \
     SATIP_NUMDEVICES="4" \
-    SATIP_SERVER="10.0.0.11|DVBS2-8|OctopusV2" \
+    SATIP_SERVER=192.168.242.43|DVBC-8|OctopusNet \
     ROBOTV_TIMESHIFTDIR="/video" \
     ROBOTV_MAXTIMESHIFTSIZE="4000000000" \
-    ROBOTV_PICONSURL="http://10.0.0.10:8099/picons/" \
+    ROBOTV_PICONSURL="http://192.168.242.40/iptv/picons" \
     ROBOTV_SERIESFOLDER="Serien" \
-    ROBOTV_EPGIMAGEURL="http://10.0.0.10:8099/epgimages/?e=%d" \
+    ROBOTV_EPGIMAGEURL= \
     VDR_LOGLEVEL="2" \
     VDR_UPDATECHANNELS="3" \
     TZ="Europe/Berlin"
